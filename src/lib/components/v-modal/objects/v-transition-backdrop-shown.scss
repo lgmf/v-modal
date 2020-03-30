@@ -1,0 +1,9 @@
+.backdrop-shown-enter-active,
+.backdrop-shown-leave-active {
+  transition: opacity 0.5s;
+}
+
+.backdrop-shown-enter,
+.backdrop-shown-leave-to {
+  opacity: 0;
+}

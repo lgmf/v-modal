@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# jest
+.jest-test-results.json
+
+# storybook
+storybook-static

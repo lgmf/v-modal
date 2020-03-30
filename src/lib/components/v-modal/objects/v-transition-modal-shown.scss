@@ -1,0 +1,9 @@
+.modal-shown-enter-active,
+.modal-shown-leave-active {
+  transition: 0.3s ease-in;
+}
+
+.modal-shown-enter,
+.modal-shown-leave-to {
+  top: -100% !important;
+}

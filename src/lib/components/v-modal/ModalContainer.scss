@@ -1,0 +1,18 @@
+@import './objects/v-transition-backdrop-shown.scss';
+@import './objects/v-transition-modal-shown.scss';
+
+.modal-container {
+  width: 0;
+  height: 0;
+
+  & > .backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--v-modal-backdrop-bg-color);
+    z-index: var(--v-modal-backdrop-z-index);
+  }
+}
