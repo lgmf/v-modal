@@ -4,13 +4,24 @@ import ModalContainer from '../ModalContainer.vue';
 
 import TestModal from './TestModal.vue';
 
+const $modal = {
+  show: jest.fn(),
+  hide: jest.fn()
+}
+
+const mocks = {
+  $modal
+};
+
 const propsData = {
   modal: 'demo-modal',
   modalProps: {
     title: 'demo modal',
     message: 'Lorem ipsum',
   },
-  showModal: false,
+  listeners: {
+    'on-finish': () => { }
+  }
 };
 
 const localVue = createLocalVue();
@@ -23,7 +34,7 @@ describe('Modal Container Component', () => {
   beforeAll(jest.useFakeTimers);
 
   beforeEach(() => {
-    modalContainerComponent = mount(ModalContainer, { propsData, localVue });
+    modalContainerComponent = mount(ModalContainer, { localVue, mocks });
   });
 
   it('should render', () => {
@@ -35,7 +46,7 @@ describe('Modal Container Component', () => {
     let testModalComponent;
 
     beforeEach(async () => {
-      modalContainerComponent.setProps({ showModal: true });
+      modalContainerComponent.vm.add(propsData.modal, propsData.modalProps, propsData.listeners);
       await modalContainerComponent.vm.$nextTick();
 
       backdrop = modalContainerComponent.find('.backdrop');
@@ -46,10 +57,9 @@ describe('Modal Container Component', () => {
       expect(backdrop.exists()).toBeTruthy();
     });
 
-    it('should notify the closed modal when the backdrop is clicked', () => {
+    it('should notify a closed modal event', () => {
       backdrop.trigger('click');
-      const [[modal]] = modalContainerComponent.emitted('modal-closed');
-      expect(modal).toEqual(propsData.modal);
+      expect(modalContainerComponent.emitted('modal-closed')).toBeTruthy();
     });
 
     it('should show the modal component', () => {
@@ -64,6 +74,10 @@ describe('Modal Container Component', () => {
 
     it('should bind the modal props correctly', () => {
       expect(testModalComponent.props()).toEqual(propsData.modalProps);
+    });
+
+    it('should bind the modal listeners correctly', () => {
+      expect(testModalComponent.vm.$listeners).toHaveProperty('on-finish');
     });
   });
 });

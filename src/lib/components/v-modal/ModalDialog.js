@@ -11,14 +11,10 @@ export default {
     onKeyUp(event) {
       switch (event.key) {
         case ModalDialogKeyboardControls.ESCAPE:
-          this.closeSelf();
+          this.$modal.hide();
           break;
         default:
       }
-    },
-    closeSelf() {
-      this.$emit('modal-dialog-closed', this.identifier);
-      this.$parent.$emit('modal-dialog-closed', this.identifier);
     },
   },
 };

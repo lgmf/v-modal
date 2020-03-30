@@ -9,21 +9,27 @@ export default {
       }, 0);
     },
   },
-  props: {
-    modal: { type: String },
-    modalProps: { type: Object },
-    showModal: { type: Boolean, default: false },
-  },
   data() {
     return {
-      modalListeners: {
-        'modal-dialog-closed': this.closeModal,
-      },
-    };
+      modal: null,
+    }
+  },
+  computed: {
+    showModal() {
+      return !!this.modal;
+    }
   },
   methods: {
-    closeModal() {
-      this.$emit('modal-closed', this.modal);
+    add(name, props = {}, listeners = {}) {
+      this.modal = {
+        name,
+        props,
+        listeners,
+      };
     },
+    clear() {
+      this.modal = null;
+      this.$emit('modal-closed');
+    }
   },
 };

@@ -1,12 +1,18 @@
 <template>
   <div class="modal-container">
     <transition name="backdrop-shown">
-      <div v-if="showModal" class="backdrop" @click="closeModal(modal)"></div>
+      <div v-if="showModal" class="backdrop" @click="clear"></div>
     </transition>
 
     <keep-alive>
       <transition name="modal-shown">
-        <component v-if="showModal" :is="modal" v-bind="modalProps" v-on="modalListeners" v-focus></component>
+        <component
+          v-if="showModal"
+          :is="modal.name"
+          v-bind="modal.props"
+          v-on="modal.listeners"
+          v-focus
+        ></component>
       </transition>
     </keep-alive>
   </div>

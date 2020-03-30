@@ -1,8 +1,8 @@
 {
   "name": "@lgmf/v-modal",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "./dist/v-modal.common.js",
-  "homepage": "https://github.com/lgmf/v-modal#readme",
+  "homepage": "https://github.com/lgmf/v-modal#how-to-use",
   "files": [
     "dist/*"
   ],
@@ -13,7 +13,8 @@
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "lint": "vue-cli-service lint",
     "storybook": "npm run test:generate-output && start-storybook -p 6006",
-    "build-storybook": "npm run test:generate-output && build-storybook"
+    "build-storybook": "npm run test:generate-output && build-storybook",
+    "deploy": "npm run build:lib && npm publish --access public"
   },
   "dependencies": {
     "core-js": "^3.6.4",

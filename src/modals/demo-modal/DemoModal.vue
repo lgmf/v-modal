@@ -9,7 +9,7 @@
     </template>
 
     <template #footer>
-      <button @click="$parent.closeModal">finish</button>
+      <button @click="$modal.hide">finish</button>
     </template>
   </modal-dialog>
 </template>

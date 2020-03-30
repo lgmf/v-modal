@@ -2,6 +2,15 @@ import { shallowMount } from '@vue/test-utils';
 
 import ModalDialog, { ModalDialogKeyboardControls } from '../ModalDialog.vue';
 
+const $modal = {
+  show: jest.fn(),
+  hide: jest.fn()
+}
+
+const mocks = {
+  $modal
+};
+
 const propsData = {
   identifier: 'test-modal',
 };
@@ -16,9 +25,10 @@ describe('Modal Dialog Component', () => {
   let modalDialogComponent;
 
   beforeEach(() => {
-    modalDialogComponent = shallowMount(ModalDialog, { propsData, slots });
-    modalDialogComponent.vm.$parent.$emit = jest.fn();
+    modalDialogComponent = shallowMount(ModalDialog, { propsData, slots, mocks });
   });
+
+  afterEach(jest.clearAllMocks);
 
   it('should have a dialog role', () => {
     expect(modalDialogComponent.attributes('role')).toEqual('dialog');
@@ -53,17 +63,8 @@ describe('Modal Dialog Component', () => {
       xButton.trigger('click');
     });
 
-    it('should notify a close event', () => {
-      expect(modalDialogComponent.emitted('modal-dialog-closed')).toBeTruthy();
-    });
-
-    it('should emit the modal identifier', () => {
-      const [[event]] = modalDialogComponent.emitted('modal-dialog-closed');
-      expect(event).toEqual(propsData.identifier);
-    });
-
     it('should notify to the parent a close event with the modal identifier', () => {
-      expect(modalDialogComponent.vm.$parent.$emit).toHaveBeenCalledWith('modal-dialog-closed', propsData.identifier);
+      expect($modal.hide).toHaveBeenCalled();
     });
   });
 
@@ -74,11 +75,7 @@ describe('Modal Dialog Component', () => {
       });
 
       it('should NOT notify a close event', () => {
-        expect(modalDialogComponent.emitted('modal-dialog-closed')).toBeUndefined();
-      });
-
-      it('should NOT notify a close event to the parent', () => {
-        expect(modalDialogComponent.vm.$parent.$emit).not.toHaveBeenCalled();
+        expect($modal.hide).not.toHaveBeenCalled();
       });
     });
 
@@ -88,25 +85,8 @@ describe('Modal Dialog Component', () => {
       });
 
       it('should notify a close event', () => {
-        expect(modalDialogComponent.emitted('modal-dialog-closed')).toBeTruthy();
+        expect($modal.hide).toHaveBeenCalled();
       });
-
-      it('should emit the modal identifier', () => {
-        const [[event]] = modalDialogComponent.emitted('modal-dialog-closed');
-        expect(event).toEqual(propsData.identifier);
-      });
-
-      it('should notify to the parent a close event with the modal identifier', () => {
-        expect(modalDialogComponent.vm.$parent.$emit).toHaveBeenCalledWith('modal-dialog-closed', propsData.identifier);
-      });
-    });
-  });
-
-  describe('#invalid props', () => {
-    it('should warn when the modal identifier is not given', () => {
-      console.error = jest.fn();
-      shallowMount(ModalDialog);
-      expect(console.error).toHaveBeenCalled();
     });
   });
 });
