@@ -18,6 +18,7 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm run test:unit
+      - run: npm run build:lib
 
   publish-npm:
     needs: build
@@ -28,7 +29,6 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: npm run build:lib
-      - run: npm run deploy
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
