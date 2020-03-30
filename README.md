@@ -60,7 +60,7 @@ export default {
     hideModal() {
       this.modal = '';
       this.modalProps = {};
-      this.showModal = false;    }
+      this.showModal = false;
     }
   }
 }
