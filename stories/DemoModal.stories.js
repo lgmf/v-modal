@@ -1,10 +1,8 @@
 import Vue from 'vue';
 
-import { ModalContainer } from '@/lib/components/v-modal/ModalContainer.vue';
-
 import DemoModal from './DemoModal';
 
-Vue.component('demo-modal', DemoModal);
+Vue.component(DemoModal.name, DemoModal);
 
 export default {
   title: 'Demo Modal',
@@ -12,9 +10,6 @@ export default {
 };
 
 export const demo = () => ({
-  components: {
-    ModalContainer,
-  },
   data() {
     return {
       modal: 'demo-modal',
@@ -29,29 +24,29 @@ export const demo = () => ({
       showModal: false,
     };
   },
+  methods: {
+    launchDemoModal() {
+      const modalConfig = {
+        identifier: DemoModal.name,
+        props: {
+          title: 'demo modal',
+          message: `
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          In at est sagittis, venenatis nisi in, fringilla sem.
+            `,
+        }
+      }
+
+      this.$modal.show(modalConfig);
+    },
+  },
   template: `
     <div class="story-container">
       <div class="launcher">
-        <button @click="openModal">
+        <button @click="launchDemoModal">
           launch demo modal
         </button>
       </div>
-
-      <modal-container
-        :modal="modal"
-        :modalProps="modalProps"
-        :showModal="showModal"
-        @modal-closed="hideModal($event)"></modal-container>
     </div>
   `,
-  methods: {
-    openModal() {
-      this.showModal = true;
-    },
-    hideModal(hiddenModal) {
-      if (hiddenModal === 'demo-modal') {
-        this.showModal = false;
-      }
-    },
-  },
 });

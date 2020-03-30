@@ -9,7 +9,7 @@
     <header class="header">
       <!-- @slot modal header components -->
       <slot name="header"></slot>
-      <button class="close" aria-label="close" @click="closeSelf">&#10005;</button>
+      <button class="close" aria-label="close" @click="$modal.hide">&#10005;</button>
     </header>
     <main class="body">
       <!-- @slot modal body components -->
