@@ -1,8 +1,12 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 
+import EventBus from '@/lib/utils/EventBus';
 import ModalContainer from '../ModalContainer.vue';
-
 import TestModal from './TestModal.vue';
+
+jest.mock('@/lib/utils/EventBus', () => ({
+  $emit: jest.fn()
+}))
 
 const $modal = {
   show: jest.fn(),
@@ -59,7 +63,12 @@ describe('Modal Container Component', () => {
 
     it('should notify a closed modal event', () => {
       backdrop.trigger('click');
-      expect(modalContainerComponent.emitted('modal-closed')).toBeTruthy();
+      expect(EventBus.$emit).toHaveBeenCalled();
+    });
+
+    it('should notify the name of the closed modal', () => {
+      backdrop.trigger('click');
+      expect(EventBus.$emit).toHaveBeenCalledWith('modal-closed', propsData.modal);
     });
 
     it('should show the modal component', () => {

@@ -50,3 +50,9 @@ export const demo = () => ({
     </div>
   `,
 });
+
+demo.story = {
+  parameters: {
+    jest: 'ModalContainer.spec.js',
+  },
+};

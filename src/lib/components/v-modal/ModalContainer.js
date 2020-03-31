@@ -1,4 +1,4 @@
-export const modalContainerSelector = 'modal-container';
+import EventBus from '@/lib/utils/EventBus';
 
 export default {
   name: 'modal-container',
@@ -28,8 +28,8 @@ export default {
       };
     },
     clear() {
+      EventBus.$emit('modal-closed', this.modal.name);
       this.modal = null;
-      this.$emit('modal-closed');
     }
   },
 };
