@@ -1,6 +1,11 @@
 import DemoModal from '@/modals/demo-modal/DemoModal'
 
 export default {
+  created() {
+    this.$modal.$on('modal-closed', (id) => {
+      console.log('the modal', id, 'has been closed');
+    });
+  },
   methods: {
     launchDemoModal() {
       const modalConfig = {
