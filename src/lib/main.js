@@ -13,14 +13,14 @@ function createModalContainer(Vue) {
 
   const containerWrapper = createModalContainerWrapper('v-modal-wrapper');
 
+  document.body.appendChild(containerWrapper);
+
   new Vue({
     render: h => {
       ref = h(ModalContainer);
       return ref;
     }
   }).$mount('#v-modal-wrapper');
-
-  document.body.appendChild(containerWrapper);
 
   return ref.componentInstance;
 }
