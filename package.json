@@ -1,6 +1,6 @@
 {
   "name": "@lgmf/v-modal",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "main": "./dist/v-modal.common.js",
   "homepage": "https://github.com/lgmf/v-modal#how-to-use",
   "files": [

@@ -12,7 +12,9 @@
 
 ## Creating your first modal
 
-Create a file `MyFirstModal.vue` at `src/modals/my-first-modal/MyFirstModal.vue` and paste the content below
+> Modals are simply a wrapper component to v-modal's ModalDialog
+
+Create a component named, for example, `MyFirstModal.vue` and paste the content below
 
 ```html
 <template>
@@ -47,30 +49,23 @@ export default {
 </script>
 ```
 
-> Modals are simply a wrapper component to v-modal's ModalDialog
-
-## Creating the modals module
-
-Create a file `index.js` at `src/modals` and paste the content below
+Register your modal globally
 
 ```js
-src/modals/index.js
+  import Vue from 'vue'
+  import MyFirstModal from 'path/to/MyFirstModal.vue'
 
+  Vue.component(MyFirstModal.name, MyFirstModal)
+```
+
+## Registering the v-modal plugin into your app
+
+```js
 import Vue from 'vue';
 import VModal from '@lgmf/v-modal';
 
-import MyFirstModal from './my-first-modal/MyFirstModal.vue';
-
 Vue.use(VModal);
-Vue.component(MyFirstModal.name, MyFirstModal);
-```
-
-## Registering the modals module into your app
-
-Inside `src/main.js` add the line below
-
-```js
-import './modals'
+...
 ```
 
 ## Testing yout first modal
@@ -87,10 +82,9 @@ Inside `src/App.vue` add a button that when clicked calls the `openMyFirstModal`
 </template>
 
 <script lang="js">
-import MyFirstModal from '@/modals/my-first-modal/MyFirstModal.vue'
+import MyFirstModal from 'path/to/MyFirstModal.vue'
 
 export default {
-
   methods: {
     openMyFirstModal() {
       const modalConfig = {
