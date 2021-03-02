@@ -18,6 +18,11 @@ function createModalContainer(Vue) {
   return modalContainerRef;
 }
 
+function removeModalContainer(ref) {
+  document.body.removeChild(ref.$el);
+  ref.$destroy();
+}
+
 class ModalPlugin {
   $on = ModalEventBus.$on.bind(ModalEventBus);
 
@@ -42,8 +47,8 @@ class ModalPlugin {
   }
 
   _setModalContainerRef(ref) {
-    if (ref) {
-      this._modalContainerRef.$destroy();
+    if (this._modalContainerRef) {
+      removeModalContainer(this._modalContainerRef);
     }
 
     this._modalContainerRef = ref;

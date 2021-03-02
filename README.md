@@ -113,6 +113,27 @@ export default {
 
 > Thats all! At this point you should be able to see your first modal.
 
+## Using outside a component
+
+VModal injects the same class into Vue.modal property
+
+```js
+import Vue from 'vue';
+import Alert from 'path/to/Alert.vue'
+
+function handleSomeError(error) {
+  const options = {
+    propsData: {
+      type: 'error',
+      message: error.message
+    },
+  };
+
+  Vue.modal.show(Alert, options);
+}
+
+```
+
 # Contributing
 
 ## Project setup
