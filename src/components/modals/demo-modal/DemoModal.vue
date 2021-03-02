@@ -1,5 +1,5 @@
 <template>
-  <modal-dialog class="demo-modal" :identifier="identifier">
+  <modal-dialog class="demo-modal">
     <template #header>
       <h1 class="title">{{ title }}</h1>
     </template>
@@ -9,7 +9,7 @@
     </template>
 
     <template #footer>
-      <button @click="$modal.hide">finish</button>
+      <button @click="onFinish()">Finish</button>
     </template>
   </modal-dialog>
 </template>

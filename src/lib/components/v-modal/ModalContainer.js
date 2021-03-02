@@ -1,4 +1,9 @@
-import EventBus from '@/lib/utils/EventBus';
+import { ModalEventBus, EventsTypes } from '../../utils';
+
+const defaultModalOptions = {
+  propsData: {},
+  on: {}
+}
 
 export default {
   name: 'modal-container',
@@ -12,6 +17,7 @@ export default {
   data() {
     return {
       modal: null,
+      modalOptions: { ...defaultModalOptions },
     }
   },
   computed: {
@@ -20,16 +26,26 @@ export default {
     }
   },
   methods: {
-    add(name, props = {}, listeners = {}) {
-      this.modal = {
-        name,
-        props,
-        listeners,
+    open(modal, options = defaultModalOptions) {
+      this.modal = modal;
+      this.modalOptions = {
+        ...defaultModalOptions,
+        ...options,
       };
     },
-    clear() {
-      EventBus.$emit('modal-closed', this.modal.name);
+    close() {
+      ModalEventBus.$emit(EventsTypes.CLOSED, this.modal);
+      this.$refs.modalComponent.$emit(EventsTypes.CLOSED, this.modal);
+      this.pop();
+    },
+    pop() {
       this.modal = null;
+      this.modalOptions = { ...defaultModalOptions }
     }
   },
+  mounted() {
+    if (this.$modal) {
+      this.$modal._setModalContainerRef(this);
+    }
+  }
 };
