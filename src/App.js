@@ -12,7 +12,7 @@ export default {
         on: {
           // Default Event emitted by every modal
           closed: (modal) => {
-            console.log(`The modal "${modal.name}" has been closed. This event can also be handled by the $modal.$on`);
+            console.log(`The modal has been closed. This event can also be handled by the $modal.$on`, modal);
           },
           // Custom event emitted by the DemoModal
           finish: () => {

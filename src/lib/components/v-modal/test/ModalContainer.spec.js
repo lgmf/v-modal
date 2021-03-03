@@ -1,44 +1,47 @@
-import { createLocalVue, mount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 
-import EventBus from '@/lib/utils/EventBus';
+import { ModalEventBus } from '../../../utils';
+
 import ModalContainer from '../ModalContainer.vue';
+
 import TestModal from './TestModal.vue';
 
-jest.mock('@/lib/utils/EventBus', () => ({
-  $emit: jest.fn()
+jest.mock('../../../utils', () => ({
+  ModalEventBus: {
+    $emit: jest.fn()
+  },
+  EventsTypes: {
+    CLOSED: 'closed',
+  }
 }))
 
 const $modal = {
   show: jest.fn(),
-  hide: jest.fn()
+  hide: jest.fn(),
+  _setModalContainerRef: jest.fn(),
 }
 
 const mocks = {
   $modal
 };
 
-const propsData = {
-  modal: 'demo-modal',
-  modalProps: {
+const modalOptions = {
+  propsData: {
     title: 'demo modal',
     message: 'Lorem ipsum',
   },
-  listeners: {
+  on: {
     'on-finish': () => { }
   }
 };
-
-const localVue = createLocalVue();
-
-localVue.component('demo-modal', TestModal);
 
 describe('Modal Container Component', () => {
   let modalContainerComponent;
 
   beforeAll(jest.useFakeTimers);
 
-  beforeEach(() => {
-    modalContainerComponent = mount(ModalContainer, { localVue, mocks });
+  beforeAll(() => {
+    modalContainerComponent = mount(ModalContainer, { mocks });
   });
 
   it('should render', () => {
@@ -49,26 +52,21 @@ describe('Modal Container Component', () => {
     let backdrop;
     let testModalComponent;
 
-    beforeEach(async () => {
-      modalContainerComponent.vm.add(propsData.modal, propsData.modalProps, propsData.listeners);
+    beforeAll(async () => {
+      modalContainerComponent.vm.open(TestModal, modalOptions);
       await modalContainerComponent.vm.$nextTick();
 
       backdrop = modalContainerComponent.find('.backdrop');
       testModalComponent = modalContainerComponent.find(TestModal);
     });
 
+    it('should set the modal container container ref', () => {
+      expect(mocks.$modal._setModalContainerRef).toHaveBeenCalledTimes(1);
+      expect(mocks.$modal._setModalContainerRef).toHaveBeenCalledWith(modalContainerComponent.vm);
+    })
+
     it('should show the backdrop', () => {
       expect(backdrop.exists()).toBeTruthy();
-    });
-
-    it('should notify a closed modal event', () => {
-      backdrop.trigger('click');
-      expect(EventBus.$emit).toHaveBeenCalled();
-    });
-
-    it('should notify the name of the closed modal', () => {
-      backdrop.trigger('click');
-      expect(EventBus.$emit).toHaveBeenCalledWith('modal-closed', propsData.modal);
     });
 
     it('should show the modal component', () => {
@@ -82,11 +80,17 @@ describe('Modal Container Component', () => {
     });
 
     it('should bind the modal props correctly', () => {
-      expect(testModalComponent.props()).toEqual(propsData.modalProps);
+      expect(testModalComponent.props()).toEqual(modalOptions.propsData);
     });
 
     it('should bind the modal listeners correctly', () => {
       expect(testModalComponent.vm.$listeners).toHaveProperty('on-finish');
+    });
+
+    it('should notify a closed modal event', () => {
+      ModalEventBus.$emit.mockClear();
+      backdrop.trigger('click');
+      expect(ModalEventBus.$emit).toHaveBeenCalledWith('closed', testModalComponent.vm);
     });
   });
 });

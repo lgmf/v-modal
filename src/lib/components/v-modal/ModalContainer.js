@@ -34,8 +34,8 @@ export default {
       };
     },
     close() {
-      ModalEventBus.$emit(EventsTypes.CLOSED, this.modal);
-      this.$refs.modalComponent.$emit(EventsTypes.CLOSED, this.modal);
+      ModalEventBus.$emit(EventsTypes.CLOSED, this.$refs.modalComponent);
+      this.$refs.modalComponent.$emit(EventsTypes.CLOSED, this.$refs.modalComponent);
       this.pop();
     },
     pop() {

@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 
-import ModalDialog, { ModalDialogKeyboardControls } from '../ModalDialog.vue';
+import ModalDialog from '../ModalDialog.vue';
 
 const $modal = {
   show: jest.fn(),
@@ -11,21 +11,22 @@ const mocks = {
   $modal
 };
 
-const propsData = {
-  identifier: 'test-modal',
-};
-
 const slots = {
   header: '<h1>test modal</h1>',
   body: 'Lorem ipsum',
   footer: '<button>finish</button>',
 };
 
+const options = {
+  slots,
+  mocks,
+}
+
 describe('Modal Dialog Component', () => {
   let modalDialogComponent;
 
   beforeEach(() => {
-    modalDialogComponent = shallowMount(ModalDialog, { propsData, slots, mocks });
+    modalDialogComponent = shallowMount(ModalDialog, options);
   });
 
   afterEach(jest.clearAllMocks);
@@ -36,10 +37,6 @@ describe('Modal Dialog Component', () => {
 
   it('should be focusable', () => {
     expect(modalDialogComponent.attributes('tabindex')).toEqual('0');
-  });
-
-  it('should set the identifier on a data attribute', () => {
-    expect(modalDialogComponent.attributes('data-modal')).toEqual(propsData.identifier);
   });
 
   it('should render the header', () => {
@@ -69,19 +66,9 @@ describe('Modal Dialog Component', () => {
   });
 
   describe('#keyboard interactions', () => {
-    describe('unsupported key', () => {
-      beforeEach(() => {
-        modalDialogComponent.trigger('keyup', { key: 'invalid' });
-      });
-
-      it('should NOT notify a close event', () => {
-        expect($modal.hide).not.toHaveBeenCalled();
-      });
-    });
-
     describe('escape', () => {
       beforeEach(() => {
-        modalDialogComponent.trigger('keyup', { key: ModalDialogKeyboardControls.ESCAPE });
+        modalDialogComponent.trigger('keyup.esc');
       });
 
       it('should notify a close event', () => {
