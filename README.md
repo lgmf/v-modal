@@ -35,7 +35,7 @@ import App from './App.vue';
 
 Vue.use(VModal, { i18n, router, store });
 
-new App({
+new Vue({
   i18n,
   router,
   store,
