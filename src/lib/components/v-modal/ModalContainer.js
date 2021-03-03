@@ -26,26 +26,27 @@ export default {
     }
   },
   methods: {
-    open(modal, options = defaultModalOptions) {
+    push(modal, options) {
       this.modal = modal;
       this.modalOptions = {
         ...defaultModalOptions,
         ...options,
       };
     },
+    pop() {
+      this.modal = null;
+      this.modalOptions = { ...defaultModalOptions }
+    },
+    async open(modal, options = defaultModalOptions) {
+      this.push(modal, options);
+      await this.$nextTick();
+      ModalEventBus.$emit(EventsTypes.OPENED, this.$refs.modalComponent);
+      this.$refs.modalComponent.$emit(EventsTypes.OPENED, this.$refs.modalComponent);
+    },
     close() {
       ModalEventBus.$emit(EventsTypes.CLOSED, this.$refs.modalComponent);
       this.$refs.modalComponent.$emit(EventsTypes.CLOSED, this.$refs.modalComponent);
       this.pop();
     },
-    pop() {
-      this.modal = null;
-      this.modalOptions = { ...defaultModalOptions }
-    }
   },
-  mounted() {
-    if (this.$modal) {
-      this.$modal._setModalContainerRef(this);
-    }
-  }
 };

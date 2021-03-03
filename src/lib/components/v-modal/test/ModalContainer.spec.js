@@ -12,13 +12,13 @@ jest.mock('../../../utils', () => ({
   },
   EventsTypes: {
     CLOSED: 'closed',
+    OPENED: 'opened',
   }
 }))
 
 const $modal = {
   show: jest.fn(),
   hide: jest.fn(),
-  _setModalContainerRef: jest.fn(),
 }
 
 const mocks = {
@@ -55,15 +55,13 @@ describe('Modal Container Component', () => {
     beforeAll(async () => {
       modalContainerComponent.vm.open(TestModal, modalOptions);
       await modalContainerComponent.vm.$nextTick();
-
       backdrop = modalContainerComponent.find('.backdrop');
       testModalComponent = modalContainerComponent.find(TestModal);
     });
 
-    it('should set the modal container container ref', () => {
-      expect(mocks.$modal._setModalContainerRef).toHaveBeenCalledTimes(1);
-      expect(mocks.$modal._setModalContainerRef).toHaveBeenCalledWith(modalContainerComponent.vm);
-    })
+    it('should notify a opened modal event', () => {
+      expect(ModalEventBus.$emit).toHaveBeenCalledWith('opened', testModalComponent.vm);
+    });
 
     it('should show the backdrop', () => {
       expect(backdrop.exists()).toBeTruthy();

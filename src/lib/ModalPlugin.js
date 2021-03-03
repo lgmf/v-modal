@@ -18,9 +18,8 @@ function createModalContainer(Vue) {
   return modalContainerRef;
 }
 
-function removeModalContainer(ref) {
-  document.body.removeChild(ref.$el);
-  ref.$destroy();
+function registerComponents(Vue) {
+  Vue.component(ModalDialog.name, ModalDialog);
 }
 
 class ModalPlugin {
@@ -28,9 +27,9 @@ class ModalPlugin {
 
   _modalContainerRef = null;
 
-  constructor(Vue) {
-    this._modalContainerRef = createModalContainer(Vue);
-    this._registerComponents(Vue);
+  constructor(Vue, options) {
+    this._modalContainerRef = createModalContainer(Vue, options);
+    registerComponents(Vue);
   }
 
   show(modal, options) {
@@ -39,19 +38,6 @@ class ModalPlugin {
 
   hide() {
     this._modalContainerRef.close();
-  }
-
-  _registerComponents(Vue) {
-    Vue.component(ModalDialog.name, ModalDialog);
-    Vue.component(ModalContainer.name, ModalContainer);
-  }
-
-  _setModalContainerRef(ref) {
-    if (this._modalContainerRef) {
-      removeModalContainer(this._modalContainerRef);
-    }
-
-    this._modalContainerRef = ref;
   }
 }
 

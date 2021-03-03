@@ -20,15 +20,27 @@ Vue.use(VModal);
 ...
 ```
 
-## Instantiate v-modal's ModalContainer component in your App.vue
+If you are using other plugins like i18n, router, store, etc you must pass them as the options parameter
+just like with your App instance
 
-```html
-<template>
-  <div id="app">
-    ...
-    <modal-container />
-  </div>
-</template>
+```js
+import Vue from 'vue';
+import VModal from '@lgmf/v-modal';
+
+import i18n from './i18n';
+import router from './router';
+import store from './store';
+
+import App from './App.vue';
+
+Vue.use(VModal, { i18n, router, store });
+
+new App({
+  i18n,
+  router,
+  store,
+  render: (h) => h(App),
+}).$mount('#app');
 ```
 
 ## Creating your first modal

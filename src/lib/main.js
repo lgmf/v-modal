@@ -5,12 +5,12 @@ import './styles/settings.scss';
 
 const VModal = {
   _installed: false,
-  install(Vue) {
+  install(Vue, options) {
     if (this._installed) {
       return;
     }
 
-    const modalPlugin = new ModalPlugin(Vue);
+    const modalPlugin = new ModalPlugin(Vue, options);
     Vue.modal = modalPlugin;
     Vue.prototype.$modal = modalPlugin;
     this._installed = true;
