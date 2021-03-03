@@ -4,9 +4,9 @@ export default {
     title: { type: String, required: true },
     message: { type: String, required: true }
   },
-  data() {
-    return {
-      identifier: 'demo-modal',
-    };
+  methods: {
+    onFinish() {
+      this.$emit('finish');
+    }
   }
 };

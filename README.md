@@ -4,21 +4,40 @@
 
 # How to use
 
-## Install the v-modal plugin
+## Install the v-modal package
 
 ```sh
   npm install @lgmf/v-modal
 ```
 
-## Creating your first modal
+## Use the v-modal plugin in your Vue app
 
-> Modals are simply a wrapper component to v-modal's ModalDialog
+```js
+import Vue from 'vue';
+import VModal from '@lgmf/v-modal';
+
+Vue.use(VModal);
+...
+```
+
+## Instantiate v-modal's ModalContainer component in your App.vue
+
+```html
+<template>
+  <div id="app">
+    ...
+    <modal-container />
+  </div>
+</template>
+```
+
+## Creating your first modal
 
 Create a component named, for example, `MyFirstModal.vue` and paste the content below
 
 ```html
 <template>
-  <modal-dialog :identifier="identifier">
+  <modal-dialog>
     <template #header>
       <h1 class="title">{{ title }}</h1>
     </template>
@@ -28,7 +47,9 @@ Create a component named, for example, `MyFirstModal.vue` and paste the content 
     </template>
 
     <template #footer>
-      <button @click="$modal.hide">finish</button>
+      <button @click="onFinish()">
+        Finish
+      </button>
     </template>
   </modal-dialog>
 </template>
@@ -40,37 +61,19 @@ export default {
     title: { type: String, required: true },
     message: { type: String, required: true }
   },
-  data() {
-    return {
-      identifier: 'my-first-modal',
-    };
-  },
+  methods: {
+    onFinish() {
+      this.$modal.hide();
+    }
+  }
 };
 </script>
 ```
-
-Register your modal globally
-
-```js
-  import Vue from 'vue'
-  import MyFirstModal from 'path/to/MyFirstModal.vue'
-
-  Vue.component(MyFirstModal.name, MyFirstModal)
-```
-
-## Registering the v-modal plugin into your app
-
-```js
-import Vue from 'vue';
-import VModal from '@lgmf/v-modal';
-
-Vue.use(VModal);
-...
-```
+> Modals are simply a wrapper component to v-modal's ModalDialog
 
 ## Testing yout first modal
 
-Inside `src/App.vue` add a button that when clicked calls the `openMyFirstModal` methods
+Inside `src/App.vue` add a button that when clicked calls the `openMyFirstModal` method
 
 ```html
 <template>
@@ -86,29 +89,52 @@ import MyFirstModal from 'path/to/MyFirstModal.vue'
 
 export default {
   methods: {
+    ...
     openMyFirstModal() {
-      const modalConfig = {
-        identifier: MyFirstModal.name,
-        props: {
+      const options = {
+        propsData: {
           title: 'my first modal',
-          message: `
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            In at est sagittis, venenatis nisi in, fringilla sem.
-          `,
+          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+        on: {
+          // Default Event emitted by every modal
+          closed: (modal) => {
+            console.log(`The modal "${modal.name}" has been closed. This event can also be handled by the $modal.$on`);
+          },
         }
       }
 
-      this.$modal.show(modalConfig);
+      this.$modal.show(MyFirstModal, options);
     },
-    ...
   }
 }
 </script>
 ```
 
-> At this point you should be able to see your first modal.
+> Thats all! At this point you should be able to see your first modal.
 
-# Development
+## Using outside a component
+
+VModal injects the same class into Vue.modal property
+
+```js
+import Vue from 'vue';
+import Alert from 'path/to/Alert.vue'
+
+function handleSomeError(error) {
+  const options = {
+    propsData: {
+      type: 'error',
+      message: error.message
+    },
+  };
+
+  Vue.modal.show(Alert, options);
+}
+
+```
+
+# Contributing
 
 ## Project setup
 ```

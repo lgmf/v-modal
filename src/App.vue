@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <h1>Demo Modal</h1>
-    <button @click="launchDemoModal">launch demo modal</button>
+    <button @click="openDemoModal">Open demo modal</button>
+
+    <modal-container />
   </div>
 </template>
 

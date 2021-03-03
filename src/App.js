@@ -1,25 +1,28 @@
-import DemoModal from '@/modals/demo-modal/DemoModal'
+import { DemoModal } from '@/components/modals';
 
 export default {
-  created() {
-    this.$modal.$on('modal-closed', (id) => {
-      console.log('the modal', id, 'has been closed');
-    });
-  },
+  name: 'demo-app',
   methods: {
-    launchDemoModal() {
-      const modalConfig = {
-        identifier: DemoModal.name,
-        props: {
-          title: 'demo modal',
-          message: `
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          In at est sagittis, venenatis nisi in, fringilla sem.
-            `,
+    openDemoModal() {
+      const options = {
+        propsData: {
+          title: 'Demo Modal',
+          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+        },
+        on: {
+          // Default Event emitted by every modal
+          closed: (modal) => {
+            console.log(`The modal "${modal.name}" has been closed. This event can also be handled by the $modal.$on`);
+          },
+          // Custom event emitted by the DemoModal
+          finish: () => {
+            console.log('finish button clicked');
+            this.$modal.hide()
+          },
         }
-      }
+      };
 
-      this.$modal.show(modalConfig);
+      this.$modal.show(DemoModal, options);
     },
   },
 }
