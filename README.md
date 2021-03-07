@@ -1,6 +1,10 @@
 # V-Modal Plugin
 
-### A simple modal plugin for Vue.js
+A simple Vue.js plugin to handle modal dialogs. Check out some use cases below:
+
+- [Stacking modals](https://codesandbox.io/s/lgmfv-modal-stack-ob9f1)
+- [Using with other plugins](https://codesandbox.io/s/lgmfv-modal-with-i18n-88xgd)
+- [Using outside vue components](https://codesandbox.io/s/lgmfv-modal-outside-component-s6nus)
 
 # How to use
 
