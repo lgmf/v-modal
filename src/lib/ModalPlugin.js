@@ -7,10 +7,10 @@ function createModalContainerWrapper(id) {
   return containerWrapper;
 }
 
-function createModalContainer(Vue) {
+function createModalContainer(Vue, options) {
   const containerWrapper = createModalContainerWrapper('v-modal-wrapper');
   const ModalContainerComponent = Vue.extend(ModalContainer);
-  const modalContainerRef = new ModalContainerComponent();
+  const modalContainerRef = new ModalContainerComponent(options);
 
   document.body.appendChild(containerWrapper);
   modalContainerRef.$mount('#v-modal-wrapper');

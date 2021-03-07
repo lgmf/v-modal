@@ -5,7 +5,21 @@
     </template>
 
     <template #body>
-      <h6 class="subtitle is-6">{{ message }}</h6>
+      <div class="field">
+        <label class="label">
+          {{ $t("language") }}
+        </label>
+
+        <div class="select mb-4">
+          <select v-model="$i18n.locale">
+            <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">
+              {{ lang }}
+            </option>
+          </select>
+        </div>
+
+        <h6 class="subtitle is-6">{{ $t("message.hello") }}</h6>
+      </div>
     </template>
 
     <template #footer>
@@ -21,7 +35,11 @@ export default {
   name: "demo-modal",
   props: {
     title: { type: String, required: true },
-    message: { type: String, required: true },
+  },
+  data() {
+    return {
+      langs: this.$i18n.availableLocales,
+    };
   },
   methods: {
     onFinish() {
