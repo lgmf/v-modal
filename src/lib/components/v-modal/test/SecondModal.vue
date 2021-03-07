@@ -1,5 +1,5 @@
 <template>
-  <modal-dialog class="test-modal" :identifier="identifier">
+  <modal-dialog class="second-modal">
     <template #header>
       <h1 class="title">{{ title }}</h1>
     </template>
@@ -18,14 +18,10 @@
 import ModalDialog from '../ModalDialog.vue';
 
 export default {
+  name: 'second-modal',
   components: {
     ModalDialog,
   },
   props: ['title', 'message'],
-  data() {
-    return {
-      identifier: 'test-modal',
-    };
-  },
 };
 </script>

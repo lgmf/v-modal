@@ -1,20 +1,22 @@
 <template>
   <div class="modal-container">
     <transition name="backdrop-shown">
-      <div v-if="showModal" class="backdrop" @click="close()"></div>
+      <div v-if="hasModal" class="backdrop" @click="close()"></div>
     </transition>
 
     <keep-alive>
-      <transition name="modal-shown">
+      <transition-group name="modal-shown">
         <component
-          ref="modalComponent"
+          ref="modalComponents"
           v-focus
-          v-if="showModal"
-          v-bind="modalOptions.propsData"
-          v-on="modalOptions.on"
-          :is="modal"
+          v-for="(modal, index) in modals"
+          v-show="index === top"
+          v-bind="modal.options.propsData"
+          v-on="modal.options.on"
+          :key="index"
+          :is="modal.Component"
         ></component>
-      </transition>
+      </transition-group>
     </keep-alive>
   </div>
 </template>
